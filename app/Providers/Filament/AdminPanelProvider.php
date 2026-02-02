@@ -2,6 +2,10 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Jobs\Resources\Applications\ApplicationResource;
+use App\Filament\Pages\Auth\Register;
+use App\Filament\Resources\Positions\PositionResource;
+use App\Models\Position;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -27,12 +31,18 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            //->login()
+            ->registration(Register::class)
+            ->profile()
+            ->login()
             ->colors([
                 'primary' => Color::Amber,
             ])
-            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
+            //->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
+            ->resources([
+                PositionResource::class,
+                ApplicationResource::class,
+            ])
             ->pages([
                 Dashboard::class,
             ])
@@ -52,9 +62,9 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
-//            ->authMiddleware([
-//                Authenticate::class,
-//            ])
+            ->authMiddleware([
+                Authenticate::class,
+            ])
             ;
     }
 }

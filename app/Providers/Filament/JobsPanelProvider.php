@@ -2,7 +2,9 @@
 
 namespace App\Providers\Filament;
 
-use Filament\Http\Middleware\Authenticate;
+use App\Filament\Jobs\Resources\Applications\ApplicationResource;
+use App\Filament\Pages\Auth\Register;
+use App\Filament\Resources\Positions\PositionResource;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -12,6 +14,7 @@ use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
+use Filament\Http\Middleware\Authenticate;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -26,10 +29,16 @@ class JobsPanelProvider extends PanelProvider
         return $panel
             ->id('jobs')
             ->path('jobs')
+            ->registration(Register::class)
+            ->login()
             ->colors([
                 'primary' => Color::Amber,
             ])
-            ->discoverResources(in: app_path('Filament/Jobs/Resources'), for: 'App\Filament\Jobs\Resources')
+            //->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
+            ->resources([
+                ApplicationResource::class,
+                PositionResource::class,
+            ])
             ->discoverPages(in: app_path('Filament/Jobs/Pages'), for: 'App\Filament\Jobs\Pages')
             ->pages([
                 Dashboard::class,
@@ -50,9 +59,9 @@ class JobsPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
-//            ->authMiddleware([
-//                Authenticate::class,
-//            ])
+            ->authMiddleware([
+                Authenticate::class,
+            ])
             ;
     }
 }
