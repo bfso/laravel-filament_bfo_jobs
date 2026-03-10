@@ -2,13 +2,22 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Company extends Authenticatable
 {
-    protected $fillable = ["company_name", "email", "password"];
+    use HasFactory;
 
-    protected $hidden = ["password"];
+    protected $fillable = [
+        'company_name',
+        'email',
+        'password',
+    ];
+
+    protected $hidden = [
+        'password',
+    ];
 
     public function jobs(){
         return $this->hasMany(Job::class);
