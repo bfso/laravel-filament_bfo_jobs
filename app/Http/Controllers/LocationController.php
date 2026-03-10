@@ -3,46 +3,43 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Location;
 
-class LocationController extends Controller
-{
-    /**
-     * Display a listing of the resource.
-     */
+class LocationController extends Controller{
     public function index()
     {
-        //
+        return Location::all();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string|unique:locations,name'
+        ]);
+
+        return Location::create($data);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function show(Location $location)
     {
-        //
+        return $location;
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Location $location)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string|unique:locations,name,' . $location->id
+        ]);
+
+        $location->update($data);
+
+        return $location;
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Location $location)
     {
-        //
+        $location->delete();
+
+        return response()->json(null, 204);
     }
 }
