@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use App\Models\Location;
+use Illuminate\Database\Seeder;
 
 class LocationSeeder extends Seeder
 {
@@ -24,7 +23,7 @@ class LocationSeeder extends Seeder
         ];
 
         foreach($locations as $name){
-            Location::create(["name"=>$name]);
+            Location::query()->firstOrCreate(['name' => $name]);
         }
     }
 }

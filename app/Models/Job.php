@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Job extends Model
 {
@@ -24,5 +25,10 @@ class Job extends Model
 
     public function location(){
         return $this->belongsTo(Location::class);
+    }
+
+    public function getSlugAttribute(): string
+    {
+        return Str::slug($this->title);
     }
 }

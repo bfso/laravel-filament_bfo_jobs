@@ -1,0 +1,23 @@
+<?php
+
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\JobApplicationController;
+use App\Http\Controllers\JobController;
+use App\Http\Controllers\LocationController;
+use Illuminate\Support\Facades\Route;
+
+Route::post('/auth/register', [AuthController::class, 'register']);
+Route::post('/auth/login', [AuthController::class, 'login']);
+Route::post('/jobs/{job}/apply', [JobApplicationController::class, 'applyApi']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/auth/me', [AuthController::class, 'me']);
+
+    Route::apiResource('jobs', JobController::class)->except(['index', 'show']);
+    Route::apiResource('categories', CategoryController::class);
+    Route::apiResource('locations', LocationController::class);
+});
+
+Route::get('/public/jobs', [JobController::class, 'publicIndex']);
+Route::get('/public/jobs/{job}', [JobController::class, 'show']);

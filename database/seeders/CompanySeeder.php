@@ -2,9 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
 use App\Models\Company;
+use Illuminate\Database\Seeder;
 
 class CompanySeeder extends Seeder
 {
@@ -13,32 +12,37 @@ class CompanySeeder extends Seeder
      */
     public function run(): void
     {
-        Company::insert([
+        $companies = [
             [
                 'company_name' => 'TechNova AG',
                 'email' => 'contact@technova.ch',
-                'password' => bcrypt('password123'),
             ],
             [
                 'company_name' => 'SwissMarketing GmbH',
                 'email' => 'info@swissmarketing.ch',
-                'password' => bcrypt('password123'),
             ],
             [
                 'company_name' => 'BuildMaster SA',
                 'email' => 'jobs@buildmaster.ch',
-                'password' => bcrypt('password123'),
             ],
             [
                 'company_name' => 'Helvetic IT Solutions',
                 'email' => 'hr@helveticit.ch',
-                'password' => bcrypt('password123'),
             ],
             [
                 'company_name' => 'GreenEnergy Group',
                 'email' => 'careers@greenenergy.ch',
-                'password' => bcrypt('password123'),
             ],
-        ]);
+        ];
+
+        foreach ($companies as $company) {
+            Company::query()->updateOrCreate(
+                ['email' => $company['email']],
+                [
+                    'company_name' => $company['company_name'],
+                    'password' => bcrypt('password123'),
+                ]
+            );
+        }
     }
 }
