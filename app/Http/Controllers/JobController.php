@@ -24,7 +24,23 @@ class JobController extends Controller
          if ($request->has('search')) {
             $query->where('title', 'like', '%'.$request->search.'%');
         }
-        return $query->get();
+        return $query->get()->map(function ($job) {
+            return [
+                'id'          => $job->id,
+                'title'       => $job->title,
+                'description' => $job->description,
+                'company'     => $job->company?->company_name ?? '',
+                'category'    => $job->category?->name ?? '',
+                'location'    => $job->location?->name ?? '',
+                'region'      => '',
+                'zip'         => '',
+                'homeOffice'  => false,
+                'language'    => '',
+                'workplace'   => '',
+                'url'         => '',
+                'publishedAt' => $job->created_at?->toIso8601String(),
+            ];
+        });
     }
 
     public function show(Job $job){

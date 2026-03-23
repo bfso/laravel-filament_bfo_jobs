@@ -25,8 +25,8 @@ class JobSeeder extends Seeder
                 'company_id' => $companies->random()->id,
                 'category_id' => $categories->random()->id,
                 'location_id' => $locations->random()->id,
-                'title' => fake()->jobTitle(),
-                'description' => fake()->paragraph(5),
+                'title' => fake('de_DE')->jobTitle(),
+                'description' => fake('de_DE')->realText(400),
             ]);
         }
     }
