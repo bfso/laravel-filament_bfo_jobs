@@ -13,6 +13,13 @@ class Job extends Model
         "location_id",
         "title",
         "description",
+        "canton",
+        "zip",
+        "home_office",
+        "language",
+        "workplace",
+        "email",
+        "phone",
     ];
 
     public function company(){
