@@ -97,8 +97,8 @@ class JobApplicationFlowTest extends TestCase
 
         $response
             ->assertOk()
-            ->assertSee('Testbewerbung')
-            ->assertSee('/jobs/php-developer/apply', false);
+            ->assertSee('Diese Seite zeigt nur die Hauptfunktionen des Projekts.')
+            ->assertSee('Bewerbung absenden');
     }
 
     private function createJob(string $title): Job

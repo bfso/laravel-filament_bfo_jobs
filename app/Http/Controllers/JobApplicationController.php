@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Job;
+use Illuminate\Contracts\View\View as ViewContract;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
-use Illuminate\View\View;
 
 class JobApplicationController extends Controller
 {
@@ -30,9 +30,19 @@ class JobApplicationController extends Controller
         ], 201);
     }
 
-    public function testPage(): View
+    public function testPage(): ViewContract
     {
-        return view('jobs.test');
+        $jobs = Job::query()
+            ->with(['company', 'category', 'location'])
+            ->latest()
+            ->get();
+
+        $featuredJob = $jobs->firstWhere('slug', 'php-developer') ?? $jobs->first();
+
+        return view('jobs.test', [
+            'jobs' => $jobs,
+            'featuredJob' => $featuredJob,
+        ]);
     }
 
     /**
