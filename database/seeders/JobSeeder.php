@@ -16,6 +16,15 @@ class JobSeeder extends Seeder
         $categories  = Category::all()->keyBy('name');
         $locations   = Location::all()->keyBy('name');
 
+        // contact info per company
+        $companyContact = [
+            'TechNova AG'          => ['email' => 'contact@technova.ch',   'phone' => '+41 44 123 45 67'],
+            'SwissMarketing GmbH'  => ['email' => 'info@swissmarketing.ch', 'phone' => '+41 44 987 65 43'],
+            'BuildMaster SA'       => ['email' => 'jobs@buildmaster.ch',   'phone' => '+41 22 234 56 78'],
+            'Helvetic IT Solutions'=> ['email' => 'hr@helveticit.ch',      'phone' => '+41 31 345 67 89'],
+            'GreenEnergy Group'    => ['email' => 'careers@greenenergy.ch', 'phone' => '+41 27 456 78 90'],
+        ];
+
         // canton / zip / language per location
         $locationMeta = [
             'Zürich'   => ['canton' => 'ZH', 'zip' => '8001', 'language' => 'Deutsch'],
@@ -211,7 +220,8 @@ class JobSeeder extends Seeder
         ];
 
         foreach ($jobs as $data) {
-            $meta = $locationMeta[$data['location']];
+            $meta    = $locationMeta[$data['location']];
+            $contact = $companyContact[$data['company']];
 
             Job::create([
                 'company_id'  => $companies[$data['company']]->id,
@@ -224,6 +234,8 @@ class JobSeeder extends Seeder
                 'home_office' => $data['home_office'],
                 'language'    => $meta['language'],
                 'workplace'   => $data['workplace'],
+                'email'       => $contact['email'],
+                'phone'       => $contact['phone'],
             ]);
         }
     }

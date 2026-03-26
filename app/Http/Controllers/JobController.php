@@ -37,8 +37,10 @@ class JobController extends Controller
                 'homeOffice'  => (bool) $job->home_office,
                 'language'    => $job->language ?? '',
                 'workplace'   => $job->workplace ?? '',
-                'url'         => '',
-                'publishedAt' => $job->created_at?->toIso8601String(),
+                'url'          => '',
+                'publishedAt'  => $job->created_at?->toIso8601String(),
+                'contactEmail' => $job->email ?? '',
+                'contactPhone' => $job->phone ?? '',
             ];
         });
     }

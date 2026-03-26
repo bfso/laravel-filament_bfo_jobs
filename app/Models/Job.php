@@ -17,6 +17,8 @@ class Job extends Model
         "home_office",
         "language",
         "workplace",
+        "email",
+        "phone",
     ];
 
     public function company(){
