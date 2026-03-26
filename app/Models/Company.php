@@ -13,13 +13,16 @@ class Company extends Authenticatable
         'company_name',
         'email',
         'password',
+        'api_token',
     ];
 
     protected $hidden = [
         'password',
+        'api_token',
     ];
 
-    public function jobs(){
+    public function jobs()
+    {
         return $this->hasMany(Job::class);
     }
 }
