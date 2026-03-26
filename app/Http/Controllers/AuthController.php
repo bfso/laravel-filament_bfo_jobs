@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function register(Request $request){
+    public function register(Request $request)
+    {
         $data = $request->validate([
             'company_name' => 'required|string|max:255',
             'email' => 'required|email|unique:companies,email',
@@ -16,27 +20,33 @@ class AuthController extends Controller
         $company = Company::create([
             'company_name' => $data['company_name'],
             'email' => $data['email'],
-            'password' => bcrypt($data['password']),
+            'password' => Hash::make($data['password']),
         ]);
 
-        return response()->json($company,201);
+        Auth::login($company);
+        $request->session()->regenerate();
+
+        return response()->json($company, 201);
     }
 
-    public function login(Request $request){
-        $crendentials = $request->validate([
+    public function login(Request $request)
+    {
+        $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
 
-        if(!Auth::attempt($crendentials)) {
+        if (! Auth::attempt($credentials)) {
             return response()->json(["message" => "Invalid credentials"], 401);
         }
 
-        return response()->json(Auth::user());
-       
+        $request->session()->regenerate();
+
+        return response()->json($request->user());
     }
 
-    public function me(Request $request){
-        return response()->json($request->user);
+    public function me(Request $request)
+    {
+        return response()->json($request->user());
     }
 }
